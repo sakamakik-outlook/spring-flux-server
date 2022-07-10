@@ -28,7 +28,7 @@ public class PaymentController {
 
 
     static {
-        payments = IntStream.range(0, 100).mapToObj( i -> createPayment()).collect(Collectors.toList());
+        payments = IntStream.range(0, 100).mapToObj( i -> createPayment()).collect(Collectors.toList()); // create payment list at start up.
     }
     @CrossOrigin(allowedHeaders = "*")
     @GetMapping(value = "/payments", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -39,7 +39,7 @@ public class PaymentController {
         return Flux.interval(Duration.ofSeconds(INTERVAL_SECOND))
                 .map(it -> {
                     var p = payments.get(atomicInt.getAndIncrement());
-                    p.setTimestamp(LocalDateTime.now());
+                    p.setTimestamp(LocalDateTime.now()); // update timestamp of payment as of now.
                     return p;
                 });
     }
